@@ -1,0 +1,84 @@
+---
+import type { Artist } from "../data/artists";
+
+interface Props {
+    artists: Artist[];
+}
+
+const { artists } = Astro.props;
+
+// Group by priority for visual hierarchy
+const headliners = artists.filter((a) => a.priority === 1);
+const midTier = artists.filter((a) => a.priority === 2);
+const openers = artists.filter((a) => a.priority === 3);
+
+const allSorted = [...headliners, ...midTier, ...openers];
+---
+
+<div class="lineup-grid">
+    {
+        allSorted.map((artist) => (
+            <div class:list={["artist-card", `priority-${artist.priority}`]}>
+                <span class="artist-name">{artist.name}</span>
+                <span class="artist-genre">{artist.genre}</span>
+            </div>
+        ))
+    }
+</div>
+
+<style>
+    .lineup-grid {
+        display: flex;
+        flex-wrap: wrap;
+        gap: var(--space-4) var(--space-8);
+        justify-content: center;
+        padding: var(--space-8) 0;
+        text-align: center;
+    }
+
+    .artist-card {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .artist-name {
+        font-family: var(--font-heading);
+        line-height: 0.9;
+        color: var(--color-ink-a);
+    }
+
+    .artist-genre {
+        font-family: var(--font-body);
+        font-size: 0.75rem;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        color: var(--color-ink-b);
+        border: 1px solid var(--color-ink-b);
+        padding: 2px 6px;
+        border-radius: 99px; /* Pill shape */
+        margin-top: 4px;
+    }
+
+    /* Priority Sizing */
+    .priority-1 .artist-name {
+        font-size: 4rem;
+        text-transform: uppercase;
+    }
+    .priority-2 .artist-name {
+        font-size: 2.5rem;
+    }
+    .priority-3 .artist-name {
+        font-size: 1.5rem;
+    }
+
+    /* Responsive Adjustments */
+    @media (max-width: 768px) {
+        .priority-1 .artist-name {
+            font-size: 3rem;
+        }
+        .priority-2 .artist-name {
+            font-size: 2rem;
+        }
+    }
+</style>

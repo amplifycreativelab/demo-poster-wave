@@ -1,0 +1,74 @@
+---
+interface Props {
+    href?: string;
+    type?: "button" | "submit" | "reset";
+    variant?: "primary" | "secondary";
+    class?: string;
+}
+
+const {
+    href,
+    type = "button",
+    variant = "primary",
+    class: className,
+} = Astro.props;
+
+const Element = href ? "a" : "button";
+const inkColor =
+    variant === "primary" ? "var(--color-ink-b)" : "var(--color-ink-c)";
+---
+
+<Element
+    href={href}
+    type={!href ? type : undefined}
+    class:list={["stamp-button", className]}
+    style={`--btn-ink: ${inkColor};`}
+>
+    <slot />
+</Element>
+
+<style>
+    .stamp-button {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        padding: 0.75rem 2rem;
+        font-family: var(--font-heading);
+        font-size: 1.5rem;
+        text-transform: uppercase;
+        color: var(--color-paper);
+        background-color: var(--btn-ink);
+        border: 2px solid var(--btn-ink);
+        cursor: pointer;
+        transition:
+            transform var(--transition-stamp),
+            box-shadow var(--transition-fast);
+        /* Clip path for slightly rough edges */
+        clip-path: polygon(
+            0% 2px,
+            2px 0%,
+            98% 0%,
+            100% 2px,
+            100% 98%,
+            98% 100%,
+            2% 100%,
+            0% 98%
+        );
+        text-decoration: none;
+    }
+
+    .stamp-button:hover {
+        transform: translateY(-2px);
+        box-shadow: 2px 4px 0px rgba(0, 0, 0, 0.15);
+    }
+
+    .stamp-button:active {
+        transform: translateY(1px) scale(0.98);
+        box-shadow: 0 0 0 rgba(0, 0, 0, 0);
+    }
+
+    .stamp-button:focus-visible {
+        outline: 2px solid var(--color-ink-a);
+        outline-offset: 4px;
+    }
+</style>

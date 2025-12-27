@@ -1,0 +1,112 @@
+---
+import { getPath } from "../utils/paths";
+
+const navItems = [
+    { label: "Home", href: "/" },
+    { label: "Lineup", href: "/lineup" },
+    { label: "Schedule", href: "/schedule" },
+    { label: "Tickets", href: "/tickets" },
+    { label: "Info", href: "/info" },
+    { label: "Contact", href: "/contact" },
+];
+
+const currentPath = Astro.url.pathname;
+const isActive = (href: string) => {
+    // Basic check: is current path part of href?
+    // We need to resolve href to full path to compare or compare logical paths.
+    // Easier: check if currentPath includes the mapped href.
+    // But mapped href includes base.
+    const resolved = getPath(href);
+    if (href === "/") return currentPath === resolved;
+    return currentPath.startsWith(resolved);
+};
+---
+
+<header class="site-header">
+    <div class="container header-inner">
+        <a href={getPath("/")} class="logo">POSTERWAVE</a>
+
+        <nav class="main-nav">
+            <ul>
+                {
+                    navItems.map((item) => (
+                        <li>
+                            <a
+                                href={getPath(item.href)}
+                                class={isActive(item.href) ? "active" : ""}
+                            >
+                                {item.label}
+                            </a>
+                        </li>
+                    ))
+                }
+            </ul>
+        </nav>
+
+        <a href={getPath("/tickets")} class="header-ticket-btn"> TICKETS </a>
+    </div>
+</header>
+
+<style>
+    .site-header {
+        padding: var(--space-4) 0;
+        border-bottom: 2px solid var(--color-ink-a);
+        background-color: var(--color-paper);
+        position: sticky;
+        top: 0;
+        z-index: 100;
+    }
+
+    .header-inner {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        height: var(--header-height);
+    }
+
+    .logo {
+        font-family: var(--font-heading);
+        font-size: 2.5rem;
+        color: var(--color-ink-b);
+        text-transform: uppercase;
+        line-height: 1;
+        transform: rotate(-1deg);
+    }
+
+    .main-nav ul {
+        display: flex;
+        list-style: none;
+        gap: var(--space-4);
+    }
+
+    .main-nav a {
+        font-family: var(--font-body);
+        font-weight: 700;
+        text-transform: uppercase;
+        font-size: 0.875rem;
+        letter-spacing: 0.05em;
+        padding: 4px 8px;
+        transition: color 0.2s;
+    }
+
+    .main-nav a:hover,
+    .main-nav a.active {
+        color: var(--color-ink-c);
+        text-decoration: underline;
+        text-underline-offset: 4px;
+        text-decoration-thickness: 2px;
+    }
+
+    .header-ticket-btn {
+        font-family: var(--font-heading);
+        font-size: 1.25rem;
+        background-color: var(--color-ink-a);
+        color: var(--color-paper);
+        padding: 8px 16px;
+        transition: transform 0.1s;
+    }
+
+    .header-ticket-btn:hover {
+        transform: scale(1.05) rotate(1deg);
+    }
+</style>

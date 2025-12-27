@@ -1,0 +1,47 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import TicketStub from "../../components/TicketStub.astro";
+import { tickets } from "../../data/tickets";
+---
+
+<BaseLayout title="Tickets - PosterWave">
+    <div class="container page-content">
+        <h1 class="page-title">Tickets</h1>
+        <div class="tickets-list">
+            {
+                tickets.map((ticket) => (
+                    <div class="ticket-wrapper">
+                        <TicketStub ticket={ticket} />
+                    </div>
+                ))
+            }
+        </div>
+    </div>
+</BaseLayout>
+
+<style>
+    .page-content {
+        padding: var(--space-8) var(--space-4);
+        min-height: 80vh; /* Ensure footer pushes down */
+    }
+
+    .page-title {
+        font-size: 5rem;
+        text-align: center;
+        color: var(--color-ink-c);
+        margin-bottom: var(--space-12);
+    }
+
+    .tickets-list {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: var(--space-8);
+    }
+
+    .ticket-wrapper {
+        width: 100%;
+        display: flex;
+        justify-content: center;
+    }
+</style>

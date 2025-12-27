@@ -1,0 +1,149 @@
+---
+import { Image } from "astro:assets";
+
+interface Props {
+    title: string;
+    date: string;
+    venue?: string;
+    rotation?: number; // degrees, e.g. -2 to 2
+    color?: "ink-a" | "ink-b" | "ink-c";
+    class?: string;
+    image?: ImageMetadata;
+}
+
+const {
+    title,
+    date,
+    venue,
+    rotation = 0,
+    color = "ink-b",
+    class: className,
+    image,
+} = Astro.props;
+
+// Formatting date
+const formattedDate = new Date(date)
+    .toLocaleDateString("en-US", { month: "short", day: "numeric" })
+    .toUpperCase();
+---
+
+<div
+    class:list={["poster-card", className]}
+    style={`--rotation: ${rotation}deg; --ink-color: var(--color-${color});`}
+>
+    <div class="poster-layer layer-back"></div>
+
+    <div class="poster-layer layer-middle"></div>
+    {
+        image && (
+            <div class="poster-layer layer-image">
+                <Image src={image} alt={title} width={400} />
+            </div>
+        )
+    }
+    <div class="poster-layer layer-front">
+        <div class="poster-content">
+            <span class="poster-date">{formattedDate}</span>
+            <h3 class="poster-title">{title}</h3>
+            {venue && <span class="poster-venue">{venue}</span>}
+        </div>
+    </div>
+</div>
+
+<style>
+    .poster-card {
+        position: relative;
+        width: 100%;
+        aspect-ratio: 3 / 4;
+        transform: rotate(var(--rotation));
+        transition: transform 0.3s ease;
+    }
+
+    .poster-card:hover {
+        transform: rotate(0deg) scale(1.02);
+        z-index: 10;
+    }
+
+    .poster-layer {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        border: 2px solid var(--ink-color);
+        background-color: var(--color-paper);
+        transition: transform 0.2s ease;
+    }
+
+    .layer-back {
+        transform: translate(6px, 6px);
+        background-color: var(--ink-color);
+        z-index: 1;
+    }
+
+    .layer-middle {
+        transform: translate(3px, 3px);
+        z-index: 2;
+        opacity: 0.5; /* Slight stacking effect */
+    }
+
+    .layer-image {
+        /* Aligned with front layer (0,0) */
+        z-index: 2;
+        overflow: hidden;
+    }
+    .layer-image img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        opacity: 0.9;
+        mix-blend-mode: multiply;
+        filter: grayscale(100%) contrast(1.2);
+    }
+
+    .layer-front {
+        z-index: 3;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        padding: var(--space-4);
+        overflow: hidden;
+        background-color: transparent; /* Essential to see image behind */
+    }
+
+    /* Hover effect for layers to collapse slightly */
+    .poster-card:hover .layer-back {
+        transform: translate(4px, 4px);
+    }
+    .poster-card:hover .layer-middle {
+        transform: translate(2px, 2px);
+    }
+
+    .poster-title {
+        font-size: 2.5rem;
+        line-height: 0.85;
+        word-break: break-word; /* Ensure clear text wrapping */
+        color: var(--ink-color);
+        margin-top: auto;
+        margin-bottom: var(--space-2);
+        /* Misregistration effect */
+        text-shadow: 1px 1px 0px rgba(0, 0, 0, 0.1);
+    }
+
+    .poster-date {
+        font-family: var(--font-heading);
+        font-size: 1.5rem;
+        color: var(--color-ink-a);
+        border-bottom: 2px solid var(--ink-color);
+        display: inline-block;
+        width: fit-content;
+    }
+
+    .poster-venue {
+        font-family: var(--font-body);
+        font-size: 0.875rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+    }
+</style>

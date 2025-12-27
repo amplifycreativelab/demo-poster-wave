@@ -1,0 +1,131 @@
+---
+import StampButton from './StampButton.astro';
+import type { Ticket } from '../data/tickets';
+
+interface Props {
+  ticket: Ticket;
+}
+
+const { ticket } = Astro.props;
+const isSoldOut = ticket.status === 'sold-out';
+---
+
+<div class:list={["ticket-stub", { "sold-out": isSoldOut }]}>
+  <div class="stub-body">
+    <h3 class="ticket-name">{ticket.name}</h3>
+    <ul class="ticket-benefits">
+      {ticket.benefits.map((benefit) => (
+        <li>{benefit}</li>
+      ))}
+    </ul>
+    <div class="price-tag">
+      <span class="currency">{ticket.currency}</span>
+      <span class="amount">{ticket.price}</span>
+    </div>
+  </div>
+  
+  <div class="stub-tear-line"></div>
+
+  <div class="stub-action">
+    {isSoldOut ? (
+      <span class="sold-out-stamp">SOLD OUT</span>
+    ) : (
+      <StampButton /*href={`/buy/${ticket.id}`}*/ variant="primary">Buy</StampButton> // Using button for now as per requirements "non-functional is fine" but href implies linking.
+      // Actually prompt says "Tickets CTA always obvious".
+      // Let's use a button triggering nothing for demo or a link.
+      // Use button for now.
+    )}
+  </div>
+</div>
+
+<style>
+  .ticket-stub {
+    display: grid;
+    grid-template-columns: 1fr auto 120px;
+    background-color: var(--color-paper);
+    border: 2px solid var(--color-ink-a);
+    max-width: 600px;
+    width: 100%;
+    position: relative;
+    /* Clean cut corners logic or just simple border */
+  }
+
+  .stub-body {
+    padding: var(--space-4);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+
+  .ticket-name {
+    font-size: 1.75rem;
+    color: var(--color-ink-a);
+    margin-bottom: var(--space-2);
+  }
+
+  .ticket-benefits {
+    list-style: none;
+    font-size: 0.9rem;
+    color: var(--color-ink-a);
+    opacity: 0.8;
+  }
+
+  .ticket-benefits li::before {
+    content: "•";
+    color: var(--color-ink-b);
+    margin-right: 6px;
+  }
+
+  .price-tag {
+    margin-top: var(--space-4);
+    font-family: var(--font-heading);
+    font-size: 2rem;
+    color: var(--color-ink-a);
+  }
+
+  /* Perforation Line */
+  .stub-tear-line {
+    width: 2px;
+    background-image: linear-gradient(to bottom, var(--color-ink-a) 50%, transparent 50%);
+    background-size: 2px 10px;
+    margin: 0 var(--space-2);
+  }
+
+  .stub-action {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: var(--space-4);
+    background-color: rgba(0,0,0,0.02);
+  }
+
+  /* Sold Out Stamp */
+  .sold-out-stamp {
+    font-family: var(--font-heading);
+    font-size: 1.5rem;
+    color: var(--color-ink-b);
+    border: 3px solid var(--color-ink-b);
+    padding: 4px 12px;
+    transform: rotate(-12deg);
+    opacity: 0.8;
+    /* mask-image removed for now */
+  }
+
+  .ticket-stub.sold-out {
+    opacity: 0.7;
+  }
+  
+  @media (max-width: 600px) {
+    .ticket-stub {
+        grid-template-columns: 1fr;
+        grid-template-rows: auto auto auto;
+    }
+    .stub-tear-line {
+        width: 100%;
+        height: 2px;
+        background-image: linear-gradient(to right, var(--color-ink-a) 50%, transparent 50%);
+        background-size: 10px 2px;
+        margin: var(--space-2) 0;
+    }
+  }
+</style>

@@ -1,0 +1,132 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import StampButton from "../../components/StampButton.astro";
+import { Image } from "astro:assets";
+import studioImage from "../../assets/studio.webp";
+---
+
+<BaseLayout title="Contact - PosterWave">
+    <div class="container page-content">
+        <h1 class="page-title">Contact Us</h1>
+
+        <div class="contact-grid">
+            <div class="form-section">
+                <form class="contact-form" action="#" method="POST">
+                    <div class="form-group">
+                        <label for="name">Name</label>
+                        <input type="text" id="name" name="name" required />
+                    </div>
+
+                    <div class="form-group">
+                        <label for="email">Email</label>
+                        <input type="email" id="email" name="email" required />
+                    </div>
+
+                    <div class="form-group">
+                        <label for="message">Message</label>
+                        <textarea id="message" name="message" rows="5" required
+                        ></textarea>
+                    </div>
+
+                    <div class="form-actions">
+                        <StampButton type="submit" variant="primary"
+                            >Send</StampButton
+                        >
+                    </div>
+                </form>
+            </div>
+            <div class="image-section">
+                <div class="studio-image-wrapper">
+                    <Image
+                        src={studioImage}
+                        alt="Creative Studio"
+                        class="studio-image"
+                    />
+                </div>
+            </div>
+        </div>
+    </div>
+</BaseLayout>
+
+<style>
+    .page-content {
+        padding: var(--space-8) var(--space-4);
+        max-width: var(--container-max-width);
+    }
+
+    .page-title {
+        font-size: 5rem;
+        text-align: center;
+        margin-bottom: var(--space-8);
+    }
+
+    .contact-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: var(--space-12);
+        align-items: center;
+    }
+
+    .contact-form {
+        display: flex;
+        flex-direction: column;
+        gap: var(--space-6);
+    }
+
+    .form-group {
+        display: flex;
+        flex-direction: column;
+        gap: var(--space-2);
+    }
+
+    label {
+        font-family: var(--font-heading);
+        font-size: 1.5rem;
+        color: var(--color-ink-a);
+    }
+
+    input,
+    textarea {
+        padding: 12px;
+        font-family: var(--font-body);
+        font-size: 1rem;
+        border: 2px solid var(--color-ink-a);
+        background-color: transparent;
+        border-radius: 0; /* No rounded corners */
+    }
+
+    input:focus,
+    textarea:focus {
+        outline: none;
+        border-color: var(--color-ink-c);
+        box-shadow: 4px 4px 0px rgba(0, 0, 0, 0.1);
+    }
+
+    .form-actions {
+        margin-top: var(--space-4);
+    }
+
+    .studio-image-wrapper {
+        border: 2px solid var(--color-ink-a);
+        box-shadow: 6px 6px 0px rgba(0, 0, 0, 0.1);
+        transform: rotate(2deg);
+    }
+
+    .studio-image {
+        width: 100%;
+        height: auto;
+        display: block;
+        filter: grayscale(100%) contrast(1.1);
+        mix-blend-mode: multiply;
+    }
+
+    @media (max-width: 768px) {
+        .contact-grid {
+            grid-template-columns: 1fr;
+        }
+        .image-section {
+            order: -1;
+            margin-bottom: var(--space-8);
+        }
+    }
+</style>

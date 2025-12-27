@@ -1,0 +1,96 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import { artists } from "../../data/artists";
+
+// Group artists by day
+const schedule = {
+    Friday: artists.filter((a) => a.day === "Friday"),
+    Saturday: artists.filter((a) => a.day === "Saturday"),
+    Sunday: artists.filter((a) => a.day === "Sunday"),
+};
+
+const days = ["Friday", "Saturday", "Sunday"] as const;
+---
+
+<BaseLayout title="Schedule - PosterWave">
+    <div class="container page-content">
+        <h1 class="page-title">Schedule</h1>
+
+        <div class="schedule-grid">
+            {
+                days.map((day) => (
+                    <div class="day-column">
+                        <h2 class="day-title">{day}</h2>
+                        <ul class="artist-list">
+                            {schedule[day].map((artist) => (
+                                <li class="artist-item">
+                                    <span class="artist-name">
+                                        {artist.name}
+                                    </span>
+                                    <span class="artist-genre">
+                                        {artist.genre}
+                                    </span>
+                                </li>
+                            ))}
+                        </ul>
+                    </div>
+                ))
+            }
+        </div>
+    </div>
+</BaseLayout>
+
+<style>
+    .page-content {
+        padding: var(--space-8) var(--space-4);
+    }
+
+    .page-title {
+        font-size: 5rem;
+        text-align: center;
+        color: var(--color-ink-b);
+        margin-bottom: var(--space-8);
+    }
+
+    .schedule-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: var(--space-8);
+    }
+
+    .day-column {
+        border: 2px solid var(--color-ink-a);
+        padding: var(--space-4);
+        background-color: var(--color-paper);
+        /* Torn paper effect handled by global css or not? Let's add simple visual */
+        box-shadow: 4px 4px 0px rgba(0, 0, 0, 0.1);
+    }
+
+    .day-title {
+        font-size: 2.5rem;
+        border-bottom: 2px solid var(--color-ink-a);
+        margin-bottom: var(--space-4);
+        padding-bottom: var(--space-2);
+    }
+
+    .artist-list {
+        list-style: none;
+    }
+
+    .artist-item {
+        margin-bottom: var(--space-4);
+        display: flex;
+        flex-direction: column;
+    }
+
+    .artist-name {
+        font-family: var(--font-heading);
+        font-size: 1.5rem;
+    }
+
+    .artist-genre {
+        font-size: 0.875rem;
+        opacity: 0.7;
+        text-transform: uppercase;
+    }
+</style>

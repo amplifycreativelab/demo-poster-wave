@@ -1,0 +1,33 @@
+:root {
+  /* Colors - Riso Ink */
+  --color-paper: #F7F2E8;
+  --color-ink-a: #1B1B1D; /* Primary / Black */
+  --color-ink-b: #FF4D6D; /* Emphasis / Hot Pink */
+  --color-ink-c: #2D6BFF; /* Secondary / Blue */
+  --color-highlight: #FFE45C; /* Highlight / Yellow */
+
+  /* Typography */
+  --font-heading: 'Bebas Neue', sans-serif;
+  --font-body: 'Inter', sans-serif;
+
+  /* Spacing Scale */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-6: 24px;
+  --space-8: 32px;
+  --space-12: 48px;
+  --space-16: 64px;
+  --space-24: 96px;
+  --space-32: 128px;
+
+  /* Layout */
+  --grid-cols: 12;
+  --container-max-width: 1440px;
+  --header-height: 80px;
+
+  /* Motion */
+  --transition-fast: 0.15s cubic-bezier(0.25, 0.46, 0.45, 0.94); /* Sharp */
+  --transition-stamp: 0.1s cubic-bezier(0.175, 0.885, 0.32, 1.275); /* Bouncy/Stamp */
+}

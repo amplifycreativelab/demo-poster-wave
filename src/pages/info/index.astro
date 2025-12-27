@@ -1,0 +1,103 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import { Image } from "astro:assets";
+import venueImage from "../../assets/venue.webp";
+---
+
+<BaseLayout title="Info - PosterWave">
+    <div class="container page-content">
+        <h1 class="page-title">Information</h1>
+
+        <div class="info-grid">
+            <section class="info-section">
+                <h2>The Venue</h2>
+                <div class="venue-image-wrapper">
+                    <Image
+                        src={venueImage}
+                        alt="The Warehouse Venue Interior"
+                        class="venue-image"
+                    />
+                </div>
+                <p>The Warehouse<br />Studio Row (concept location)</p>
+                <p>
+                    Located in the heart of the creative district, our venue is
+                    a converted industrial space perfect for sound and grit.
+                </p>
+            </section>
+
+            <section class="info-section">
+                <h2>FAQ</h2>
+                <dl class="faq-list">
+                    <dt>Is this event 18+?</dt>
+                    <dd>Yes, ID will be checked at the door.</dd>
+
+                    <dt>Can I bring my own camera?</dt>
+                    <dd>
+                        Disposable and film cameras are encouraged. No DSLRs
+                        without a press pass.
+                    </dd>
+
+                    <dt>Is there accessible entry?</dt>
+                    <dd>
+                        Yes, the venue has a ramp entry on the north side and
+                        accessible bathrooms.
+                    </dd>
+                </dl>
+            </section>
+        </div>
+    </div>
+</BaseLayout>
+
+<style>
+    .page-content {
+        padding: var(--space-8) var(--space-4);
+    }
+
+    .page-title {
+        font-size: 5rem;
+        text-align: center;
+        margin-bottom: var(--space-8);
+    }
+
+    .info-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: var(--space-12);
+    }
+
+    .info-section h2 {
+        font-size: 2.5rem;
+        color: var(--color-ink-b);
+        border-bottom: 2px solid var(--color-ink-a);
+        margin-bottom: var(--space-4);
+    }
+
+    .faq-list dt {
+        font-family: var(--font-heading);
+        font-size: 1.5rem;
+        margin-top: var(--space-4);
+        color: var(--color-ink-a);
+    }
+
+    .faq-list dd {
+        margin-left: 0;
+        font-size: 1rem;
+        line-height: 1.6;
+        margin-bottom: var(--space-4);
+    }
+
+    .venue-image-wrapper {
+        margin-bottom: var(--space-4);
+        border: 2px solid var(--color-ink-a);
+        transform: rotate(1deg);
+        box-shadow: 4px 4px 0px rgba(0, 0, 0, 0.1);
+    }
+
+    .venue-image {
+        width: 100%;
+        height: auto;
+        display: block;
+        filter: grayscale(100%) contrast(1.1);
+        mix-blend-mode: multiply;
+    }
+</style>

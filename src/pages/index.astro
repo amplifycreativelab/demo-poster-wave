@@ -1,0 +1,230 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import PosterLayer from "../components/PosterLayer.astro";
+import StampButton from "../components/StampButton.astro";
+import { events } from "../data/events";
+import { getPath } from "../utils/paths";
+
+// Get next 3 events for featured section
+const featuredEvents = events.slice(0, 3);
+---
+
+<BaseLayout title="PosterWave - Riso Poster Festival">
+  <section class="hero-section">
+    <div class="container hero-inner">
+      <div class="hero-content">
+        <h1 class="hero-title">
+          <span class="line-1">Riso</span>
+          <span class="line-2">Poster</span>
+          <span class="line-3">Festival</span>
+        </h1>
+        <p class="hero-date">Nov 14-16, 2025 • Studio Row</p>
+        <div class="hero-actions">
+          <StampButton href={getPath("/tickets")} variant="primary">
+            Get Tickets
+          </StampButton>
+          <StampButton href={getPath("/lineup")} variant="secondary">
+            View Lineup
+          </StampButton>
+        </div>
+      </div>
+
+      <div class="hero-visuals">
+        <!-- Visual chaos cluster -->
+        <PosterLayer
+          title="Neon Dreams"
+          date="2025-11-14"
+          rotation={-4}
+          color="ink-b"
+          class="hero-poster poster-1"
+          image={events[0].posterImage}
+        />
+        <PosterLayer
+          title="Analog Noise"
+          date="2025-11-15"
+          rotation={3}
+          color="ink-c"
+          class="hero-poster poster-2"
+          image={events[1].posterImage}
+        />
+      </div>
+    </div>
+  </section>
+
+  <section class="featured-section">
+    <div class="container">
+      <h2 class="section-title">Latest Gigs</h2>
+      <div class="events-grid">
+        {
+          featuredEvents.map((event, index) => (
+            <PosterLayer
+              title={event.title}
+              date={event.date}
+              venue={event.venue}
+              rotation={index % 2 === 0 ? 1 : -1}
+              color="ink-a"
+              image={event.posterImage}
+            />
+          ))
+        }
+      </div>
+      <div class="all-events-link">
+        <StampButton href={getPath("/schedule")} variant="secondary">
+          Full Schedule
+        </StampButton>
+      </div>
+    </div>
+  </section>
+
+  <section class="intro-text-section">
+    <div class="container">
+      <p class="manifesto">
+        Three days of ink, paper, and sound. PosterWave brings together the best
+        undeground artists and risograph printmakers for a celebration of DIY
+        culture.
+      </p>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  /* Hero */
+  .hero-section {
+    padding: var(--space-12) 0;
+    overflow: hidden; /* Hide poster overflow */
+  }
+
+  .hero-inner {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--space-8);
+    align-items: center;
+  }
+
+  .hero-title {
+    font-size: 8rem;
+    line-height: 0.8;
+    display: flex;
+    flex-direction: column;
+    margin-bottom: var(--space-4);
+  }
+
+  .hero-title .line-2 {
+    margin-left: var(--space-8);
+    color: var(--color-ink-b);
+  }
+  .hero-title .line-3 {
+    margin-left: var(--space-4);
+    color: var(--color-ink-c);
+  }
+
+  .hero-date {
+    font-family: var(--font-heading);
+    font-size: 2rem;
+    margin-bottom: var(--space-8);
+    border-top: 2px solid var(--color-ink-a);
+    padding-top: var(--space-2);
+    display: inline-block;
+  }
+
+  .hero-actions {
+    display: flex;
+    gap: var(--space-4);
+  }
+
+  .hero-visuals {
+    position: relative;
+    height: 600px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .hero-poster {
+    position: absolute;
+    width: 320px;
+    box-shadow: 10px 10px 0px rgba(0, 0, 0, 0.1);
+  }
+
+  .poster-1 {
+    z-index: 2;
+    top: 10%;
+    right: 10%;
+  }
+  .poster-2 {
+    z-index: 1;
+    top: 30%;
+    left: 0%;
+    transform: scale(0.9) rotate(3deg);
+    opacity: 0.9;
+  }
+
+  /* Featured */
+  .featured-section {
+    padding: var(--space-12) 0;
+    background-color: var(--color-ink-a);
+    border-top: 4px dashed var(--color-ink-a);
+    border-bottom: 4px dashed var(--color-ink-a);
+  }
+
+  .section-title {
+    font-size: 4rem;
+    margin-bottom: var(--space-8);
+    text-align: center;
+    color: var(--color-ink-b);
+  }
+
+  .events-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: var(--space-8);
+    margin-bottom: var(--space-8);
+  }
+
+  .all-events-link {
+    text-align: center;
+  }
+
+  /* Intro */
+  .intro-text-section {
+    padding: var(--space-12) 0;
+    text-align: center;
+  }
+
+  .manifesto {
+    font-size: 2rem;
+    font-family: var(--font-heading);
+    max-width: 800px;
+    margin: 0 auto;
+    line-height: 1.2;
+    text-transform: uppercase;
+    color: var(--color-ink-a);
+  }
+
+  @media (max-width: 768px) {
+    .hero-inner {
+      grid-template-columns: 1fr;
+      text-align: center;
+    }
+    .hero-title {
+      font-size: 5rem;
+    }
+    .hero-title .line-2,
+    .hero-title .line-3 {
+      margin-left: 0;
+    }
+    .hero-actions {
+      justify-content: center;
+    }
+    .hero-visuals {
+      height: 400px;
+      margin-top: var(--space-8);
+    }
+    .hero-poster {
+      width: 240px;
+    }
+    .poster-2 {
+      left: 10%;
+    }
+  }
+</style>
